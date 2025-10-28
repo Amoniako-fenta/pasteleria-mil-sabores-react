@@ -1,0 +1,78 @@
+import React from 'react';
+    import { render, screen, fireEvent } from '@testing-library/react';
+    import { CartContext } from '../context/CartContext'; // Importa el Contexto
+    import ProductCard from './ProductCard';
+
+    // Mock simple para alert
+    global.alert = jest.fn();
+
+    // Producto de ejemplo para pasar como prop
+    const mockProduct = {
+      id: 'TC001',
+      name: 'Torta Cuadrada de Chocolate',
+      price: 45000,
+      img: 'https://i.pinimg.com/736x/d1/e6/49/d1e649ae8884cf9e8eeba48c2599db89.jpg',
+      category: 'tortas-cuadradas',
+      description: 'Deliciosa torta de chocolate...',
+    };
+
+    describe('Componente ProductCard', () => {
+      // Mock de la función addToCart que viene del contexto
+      const mockAddToCart = jest.fn();
+
+      // Función helper para renderizar con el Provider del carrito
+      const renderProductCard = (product) => {
+        render(
+          // Proveemos un valor simulado para el contexto, incluyendo el mock de addToCart
+          <CartContext.Provider value={{ addToCart: mockAddToCart }}>
+            <ProductCard product={product} />
+          </CartContext.Provider>
+        );
+      };
+
+      test('renderiza la información del producto correctamente', () => {
+        renderProductCard(mockProduct);
+
+        expect(screen.getByRole('heading', { name: mockProduct.name })).toBeInTheDocument();
+        expect(screen.getByText(`$${mockProduct.price.toLocaleString('es-CL')}`)).toBeInTheDocument();
+        expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.img);
+        expect(screen.getByRole('button', { name: /Añadir al Carrito/i })).toBeInTheDocument();
+      });
+
+      test('llama a addToCart con el producto correcto al hacer clic', () => {
+        renderProductCard(mockProduct);
+        const addButton = screen.getByRole('button', { name: /Añadir al Carrito/i });
+
+        fireEvent.click(addButton);
+
+        // Verificamos que la función simulada (mockAddToCart) fue llamada...
+        expect(mockAddToCart).toHaveBeenCalledTimes(1);
+        // ...y que fue llamada CON el objeto 'mockProduct'
+        expect(mockAddToCart).toHaveBeenCalledWith(mockProduct);
+      });
+    });
+    ```
+
+**Acción:** Debes crear **más archivos `.test.js`** (idealmente uno por cada componente o vista importante) y escribir pruebas similares para verificar diferentes lógicas (ej. prueba `Register.js` para la validación de edad y código). La meta es tener unas 8-10 pruebas en total para cumplir con la rúbrica.
+
+#### Paso 3: Implementar el Proceso de Testeo (IE2.3.1)
+
+Esto se refiere a cómo ejecutas y analizas tus pruebas.
+
+1.  **Configuración del Entorno:** `create-react-app` ya lo hizo por ti al instalar Jest y RTL. No necesitas configurar nada más.
+2.  **Escritura de Pruebas:** Es lo que hiciste en el Paso 2. Usas `describe`, `test` (o `it`), `render`, `screen`, `fireEvent`, y `expect`.
+3.  **Uso de Mocks:**
+    * **Funciones Simples:** Usamos `jest.fn()` para simular funciones que vienen de props o contextos (como `mockAddToCart`).
+    * **Módulos:** Si tuvieras llamadas a API (ej. con `axios`), usarías `jest.mock('axios')` para simular el módulo completo (como vimos en la guía anterior).
+    * **`localStorage`:** Para probar si `CartContext` o `AuthContext` guardan en `localStorage`, usarías `jest.spyOn(Storage.prototype, 'setItem')`, como te mostré en un ejemplo anterior.
+4.  **Análisis de Resultados:**
+    * Ejecuta tus pruebas con el comando:
+        ```bash
+        npm test
+        ```
+    * Jest te mostrará en la terminal cuántas pruebas pasaron (`PASS`) y cuántas fallaron (`FAIL`), con detalles de los errores. 
+5.  **Cobertura de Código:**
+    * Para generar el reporte de cobertura (y el documento que te piden), ejecuta:
+        ```bash
+        npm test -- --coverage
+        

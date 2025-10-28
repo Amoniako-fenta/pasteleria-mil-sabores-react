@@ -1,13 +1,24 @@
+@import url('https://fonts.googleapis.com/specimen/Lato');
+@import url('https://fonts.googleapis.com/specimen/Pacifico');
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #FFF5E1; /* Crema Pastel */
+  color: #5D4037; /* Marrón Oscuro */
+  font-family: 'Lato', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Fuente artística para títulos */
+h1, h2, h3, .brand-title {
+  font-family: 'Pacifico', cursive;
+}
+
+/* Colores de acento */
+.btn-primary {
+  background-color: #8B4513; /* Chocolate */
+  border-color: #8B4513;
+}
+
+.btn-secondary {
+  background-color: #FFC0CB; /* Rosa Suave */
+  border-color: #FFC0CB;
 }

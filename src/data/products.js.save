@@ -1,0 +1,79 @@
+// Los datos de tus productos
+// Las rutas en 'img' ahora apuntan a tu carpeta /public/img/productos/
+export const products = [
+  {
+    id: 'TC001',
+    name: 'Torta Cuadrada de Chocolate',
+    price: 45000,
+    category: 'tortas-cuadradas',
+img: 'https://i.pinimg.com/736x/d1/e6/49/d1e649ae8884cf9e8eeba48c2599db89.jpg',
+    description: 'Deliciosa torta de chocolate con capas de ganache y un toque de avellanas. Personalizable con mensajes especiales.'
+  },
+  {
+    id: 'TC002',
+    name: 'Torta Cuadrada de Frutas',
+    price: 50000,
+    category: 'tortas-cuadradas',
+img: 'https://i.pinimg.com/1200x/5a/3e/44/5a3e446ea093cd1477b85790e521f58b.jpg',
+    description: 'Una mezcla de frutas frescas y crema chantilly sobre un suave bizcocho de vainilla, ideal para celebraciones.'
+  },
+  {
+    id: 'TT001',
+    name: 'Torta Circular de Vainilla',
+    price: 40000,
+    category: 'tortas-circulares',
+img: 'https://i.pinimg.com/736x/3e/68/56/3e68563b22627593ca68d5c3f32ac9d1.jpg"',
+    description: 'Bizcocho de vainilla clásico relleno con crema pastelera y cubierto con glaseado dulce.'
+  },
+  {
+    id: 'TT002',
+    name: 'Torta Circular de Manjar',
+    price: 42000,
+    category: 'tortas-circulares',
+img: 'https://i.pinimg.com/1200x/f8/21/54/f82154e4f2e38793ce7af18488d27490.jpg"',
+    description: 'Torta tradicional chilena con manjar y nueces, un deleite para los amantes de los sabores clásicos.'
+  },
+  {
+    id: 'PI001',
+    name: 'Mousse de Chocolate',
+    price: 5000,
+    category: 'postres-individuales',
+img: 'https://i.pinimg.com/1200x/f4/ce/e5/f4cee5e7149731cc9dd440115a194fbf.jpg',
+    description: 'Postre individual cremoso y suave, hecho con chocolate de alta calidad.'
+  },
+  {
+    id: 'PI002',
+    name: 'Tiramisú Clásico',
+    price: 5500,
+    category: 'postres-individuales',
+img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjsJpU_95skNNdIG9JRp8_gBFqEGQ4PAd5aA&s',
+    description: 'Postre italiano con capas de café, mascarpone y cacao, perfecto para finalizar cualquier comida.'
+  },
+  {
+    id: 'PSA001',
+    name: 'Torta Sin Azúcar de Naranja',
+    price: 48000,
+    category: 'sin-azucar',
+img: 'https://mozart.cl/wp-content/uploads/2025/05/88_MIF_2420_Torta_de_Naranja_Sin_Azucar_Anadida_1080x1080.jpg',
+    description: 'Torta ligera y deliciosa, endulzada naturalmente, ideal para opciones saludables.'
+  },
+  // ... (puedes seguir con el resto de productos)
+  {
+    id: 'PV001',
+    name: 'Torta Vegana de Chocolate',
+    price: 50000,
+    category: 'vegana',
+img: 'https://i.pinimg.com/1200x/ca/1b/c2/ca1bc26d0dfe365207cf7a01b08995a4.jpg',
+    description: 'Torta de chocolate húmeda y deliciosa, hecha sin productos de origen animal, perfecta para veganos.'
+  },
+  {
+    id: 'TE001',
+    name: 'Torta Especial de Cumpleaños',
+    price: 55000,
+    category: 'tortas-especiales',
+img: 'https://i.pinimg.com/736x/ea/2f/c2/ea2fc20aa861070fd19d4d11330fa2bb.jpg',
+    description: 'Diseñada para celebraciones, personalizable con decoraciones y mensajes únicos.'
+  }
+];
+
+
