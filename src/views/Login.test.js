@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 // Necesario porque Login usa <Link> y useNavigate (indirectamente via useAuth)
-import { MemoryRouter } from 'react-router-dom'; 
+import { MemoryRouter } from 'react-router-dom';
 // Necesario porque Login usa useAuth
-import { AuthProvider } from '../context/AuthContext'; 
+import { AuthProvider } from '../context/AuthContext';
 // El componente a probar
 import Login from './Login';
 
@@ -99,6 +99,25 @@ describe('Componente Login', () => {
     expect(screen.getByText(/Máximo 10 caracteres/i)).toBeInTheDocument();
   });
 
+  // **NUEVA PRUEBA 6: Verificar campos requeridos vacíos**
+  test('muestra errores si los campos requeridos están vacíos al enviar', async () => {
+    renderLogin();
+    const submitButton = screen.getByRole('button', { name: /Entrar/i });
+
+    // Simula el envío sin rellenar nada
+    fireEvent.click(submitButton);
+
+    // react-hook-form mostrará los errores de 'required'
+    // Usamos findAllByText porque pueden aparecer múltiples errores y es asíncrono
+    const requiredErrors = await screen.findAllByText(/es requerido/i);
+
+    // Verificamos que al menos un mensaje de "es requerido" aparezca
+    expect(requiredErrors.length).toBeGreaterThan(0);
+    // Opcional: Verificar que aparezcan ambos mensajes específicos
+    expect(screen.getByText(/El correo es requerido/i)).toBeInTheDocument();
+    expect(screen.getByText(/La contraseña es requerida/i)).toBeInTheDocument();
+  });
+
   // (Opcional - Más Avanzado) Prueba para verificar que se llama a la función 'login' del contexto
   // test('llama a la función login con los datos correctos al enviar un formulario válido', () => {
   //   // Se necesitaría mockear useAuth para espiar la función login
@@ -107,7 +126,7 @@ describe('Componente Login', () => {
   //   //   ...jest.requireActual('../context/AuthContext'), // Mantener las exportaciones originales
   //   //   useAuth: () => ({ login: mockLogin }), // Sobrescribir useAuth
   //   // }));
-    
+
   //   renderLogin();
   //   const emailInput = screen.getByLabelText(/Correo:/i);
   //   const passwordInput = screen.getByLabelText(/Contraseña:/i);

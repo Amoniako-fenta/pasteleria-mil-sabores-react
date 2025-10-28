@@ -1,24 +1,32 @@
-    import React from 'react';
-    import ReactDOM from 'react-dom/client';
-    import { BrowserRouter } from 'react-router-dom'; // <-- 1. Importa aquí
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+// Importa BrowserRouter aquí
+import { BrowserRouter } from 'react-router-dom'; 
 
-    import './styles.css';
-    import 'bootstrap/dist/css/bootstrap.min.css';
+// Importa tus estilos
+import './styles.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-    import App from './App';
-    import { CartProvider } from './context/CartContext';
-    import { AuthProvider } from './context/AuthContext';
+// Importa el componente principal y los Providers de Contexto
+import App from './App';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(
-      <React.StrictMode>
-        {/* 2. BrowserRouter ahora es el componente principal */}
-        <BrowserRouter>
-          <AuthProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+// Obtiene el elemento raíz del HTML
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Renderiza la aplicación
+root.render(
+  <React.StrictMode>
+    {/* BrowserRouter envuelve toda la aplicación */}
+    <BrowserRouter> 
+      <AuthProvider>
+        <CartProvider>
+          {/* App ahora está dentro de todos los providers y el router */}
+          <App />
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter> 
+  </React.StrictMode>
+);
+

@@ -1,45 +1,56 @@
-// en src/components/Navbar.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // <-- 1. Importa el hook
-import logo from '../media/logo.png';
+    import React from 'react';
+    import { Link, NavLink } from 'react-router-dom';
+    import { useAuth } from '../context/AuthContext';
+    import { useCart } from '../context/CartContext';
+    // BORRA o COMENTA la línea de import logo:
+    // import logo from '../media/logo.png'; 
 
-function Navbar() {
-  const { currentUser, logout } = useAuth(); // <-- 2. Obtiene el estado y la función
+    function Navbar() {
+      const { currentUser, logout } = useAuth();
+      const { itemCount, openCart } = useCart();
 
-  return (
-    <header className="site-header">
-      <Link className="brand" to="/">
-        <img src={logo} alt="Logo Pastelería Mil Sabores" />
-        <span></span>
-      </Link>
+      return (
+        <header className="site-header">
+          <Link className="brand" to="/">
+            {/* OPCIÓN A: Si ya moviste 'media' a 'public' y tienes logo.png */}
+            <img src="/media/logo.png" alt="Logo Pastelería Mil Sabores" />
+            
+            {/* OPCIÓN B: Si aún no tienes la imagen, usa texto */}
+            {/* <span>Pastelería Mil Sabores</span> */}
+          </Link>
 
-      <nav aria-label="principal">
-        <ul id="menu" className="menu">
-          <li><Link to="/">Inicio</Link></li>
-          <li><Link to="/catalogo">Catálogo</Link></li>
-          <li><Link to="/nosotros">Nosotros</Link></li>
-          <li><Link to="/contacto">Contacto</Link></li>
-          
-          {/* 3. LÓGICA DE REACT: Reemplaza tu script de index.html */}
-          {!currentUser ? (
-            // Si NO hay usuario logueado
-            <li><Link to="/login" className="btn">Iniciar Sesión</Link></li>
-          ) : (
-            // Si SÍ hay usuario logueado
-            <>
-              <li><span className="user-greeting">Hola, {currentUser}</span></li>
+          <nav aria-label="principal">
+            <ul id="menu" className="menu">
+              <li><NavLink to="/">Inicio</NavLink></li>
+              <li><NavLink to="/catalogo">Catálogo</NavLink></li>
+              <li><NavLink to="/nosotros">Nosotros</NavLink></li>
+              <li><NavLink to="/contacto">Contacto</NavLink></li>
+              
+              {!currentUser ? (
+                <li><Link to="/login" className="btn btn-primary">Iniciar Sesión</Link></li>
+              ) : (
+                <>
+                  {currentUser.isAdmin && (
+                     <li><NavLink to="/admin">Admin</NavLink></li>
+                  )}
+                  <li><span className="user-greeting">Hola, {currentUser.email.split('@')[0]}</span></li>
+                  <li>
+                    <button onClick={logout} className="btn btn-secondary">
+                      Cerrar Sesión
+                    </button>
+                  </li>
+                </>
+              )}
+              
               <li>
-                <button onClick={logout} className="btn btn-secondary">
-                  Cerrar Sesión
+                <button id="cartBtn" className="btn" onClick={openCart}>
+                  🛒 Carrito ({itemCount})
                 </button>
               </li>
-            </>
-          )}
-        </ul>
-      </nav>
-    </header>
-  );
-}
+            </ul>
+          </nav>
+        </header>
+      );
+    }
 
-export default Navbar;
+    export default Navbar;
