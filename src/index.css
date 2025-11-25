@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/specimen/Lato');
+@import url('https://fonts.googleapis.com/specimen/Pacifico');
+
+body {
+  background-color: #FFF5E1; /* Crema Pastel */
+  color: #5D4037; /* Marrón Oscuro */
+  font-family: 'Lato', sans-serif;
+}
+
+/* Fuente artística para títulos */
+h1, h2, h3, .brand-title {
+  font-family: 'Pacifico', cursive;
+}
+
+/* Colores de acento */
+.btn-primary {
+  background-color: #8B4513; /* Chocolate */
+  border-color: #8B4513;
+}
+
+.btn-secondary {
+  background-color: #FFC0CB; /* Rosa Suave */
+  border-color: #FFC0CB;
+}

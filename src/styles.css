@@ -1,0 +1,274 @@
+/* =========================================================
+   1. FUENTES Y VARIABLES GLOBALES
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Pacifico&display=swap');
+
+:root {
+  /* Layout */
+  --max-width: 1100px;
+  --gap: 1.5rem;
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+
+  /* Paleta de Colores */
+  --color-fondo: #FFF5E1;
+  --color-acento-rosa: #FFC0CB;
+  --color-acento-choco: #8B4513;
+  --color-texto: #5D4037;
+  --color-texto-sec: #757575;
+  --color-blanco: #FFFFFF;
+  --color-error: #D32F2F;
+
+  /* Tipografía */
+  --font-principal: 'Lato', sans-serif;
+  --font-encabezado: 'Pacifico', cursive;
+}
+
+/* =========================================================
+   2. RESET Y ESTILOS BASE
+   ========================================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+}
+main { padding-top: 2rem; padding-bottom: 2rem; }
+img { max-width: 100%; display: block; }
+a { color: var(--color-acento-choco); text-decoration: none; transition: color var(--transition-speed) ease; }
+a:hover { text-decoration: underline; }
+
+*:focus-visible {
+  outline: 3px solid var(--color-acento-rosa);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* =========================================================
+   3. TIPOGRAFÍA GENERAL
+   ========================================================= */
+h1, h2, h3 { font-family: var(--font-encabezado); color: var(--color-acento-choco); text-align: center; margin-bottom: 1rem; }
+h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 2.8rem); }
+/* h2 de Card.Title necesita alineación izquierda */
+.card-title { text-align: left; font-size: 1.4rem; }
+
+p { max-width: 65ch; margin: 0 auto 1.5em auto; text-align: center; }
+
+/* =========================================================
+   4. LAYOUT: HEADER Y FOOTER
+   ========================================================= */
+.site-header {
+  position: sticky; top: 0; width: 100%; background-color: var(--color-fondo);
+  border-bottom: 2px solid var(--color-acento-choco);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.5rem 2rem; z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+.brand { flex-shrink: 0; text-decoration: none; }
+.brand img { height: 50px; display: inline-block; vertical-align: middle; transition: transform var(--transition-speed) ease; }
+.brand:hover img { transform: scale(1.05); }
+.brand span { font-family: var(--font-encabezado); font-size: 1.5rem; margin-left: 0.5rem; display: inline-block; vertical-align: middle; color: var(--color-texto); }
+.menu { list-style: none; display: flex; align-items: center; gap: 1.5rem; }
+.menu a, .menu button, .menu span { display: inline-block; padding: 0.5rem 0; font-weight: bold; text-decoration: none; color: var(--color-texto); background: none; border: none; cursor: pointer; font-size: 1rem; transition: color var(--transition-speed) ease; }
+.menu a:hover, .menu a.active { color: var(--color-acento-choco); }
+.menu .user-greeting { padding: 0.5rem 0; font-weight: bold; }
+.site-footer { margin-top: 3rem; padding: 3rem 1.5rem; background: var(--color-acento-rosa); color: var(--color-texto); text-align: center; }
+
+/* =========================================================
+   5. SECCIONES PÁGINA DE INICIO
+   ========================================================= */
+.hero {
+  display: flex; align-items: center; gap: 2rem; max-width: var(--max-width);
+  margin: 2rem auto; padding: 1rem;
+}
+.hero__content { text-align: left; }
+.hero__content h1, .hero__content p { text-align: left; margin-left: 0; margin-right: 0; }
+.hero__content .btn { margin-top: 1rem; }
+.hero picture { flex: 0 0 45%; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+.features {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--gap); max-width: var(--max-width); margin: 3rem auto; padding: 1rem;
+}
+.card { /* Estilo base de 'card' usado en Features */
+  background: var(--color-blanco); padding: 2rem; border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================================
+   6. FORMULARIOS (LOGIN, REGISTRO, CONTACTO)
+   ========================================================= */
+.auth, .form {
+  max-width: 500px; margin: 3rem auto; padding: 2.5rem;
+  background: var(--color-blanco); border-radius: var(--border-radius);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); text-align: left;
+}
+.auth h2, .form h2 { text-align: center; }
+.field { margin-bottom: 1.5rem; }
+.field label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 0.8rem 1rem; border: 1px solid #ddd;
+  border-radius: 8px; font-family: var(--font-principal); font-size: 1rem;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline: none; border-color: var(--color-acento-rosa);
+  box-shadow: 0 0 0 3px rgba(255, 192, 203, 0.5);
+}
+.error-message { color: var(--color-error); font-size: 0.9rem; margin-top: 0.5rem; display: block; }
+.actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+/* =========================================================
+   7. CARRUSEL DE INICIO
+   ========================================================= */
+.home-carousel-section { max-width: var(--max-width); margin: 3rem auto; padding: 1rem; }
+.carousel-img { height: 500px; object-fit: cover; border-radius: var(--border-radius); }
+.carousel-caption-custom {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  padding: 1.5rem; text-align: left;
+}
+.carousel-control-prev, .carousel-control-next { width: 5%; opacity: 0.7; transition: opacity var(--transition-speed) ease; }
+.carousel-control-prev:hover, .carousel-control-next:hover { opacity: 1; background: rgba(0, 0, 0, 0.1); }
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-size: 60%;
+  filter: invert(16%) sepia(26%) saturate(2333%) hue-rotate(352deg) brightness(94%) contrast(90%);
+}
+
+/* =========================================================
+   8. PRODUCTOS Y CATÁLOGO (REFACTORIZADO)
+   ========================================================= */
+.filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 2rem; }
+.chip {
+  padding: 0.5rem 1rem; border-radius: 50px; border: 2px solid var(--color-acento-rosa);
+  background: transparent; color: var(--color-acento-choco); font-weight: bold;
+  cursor: pointer; transition: all var(--transition-speed) ease;
+}
+.chip.active, .chip:hover { background: var(--color-acento-rosa); color: var(--color-texto); }
+.grid.productos {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--gap); max-width: var(--max-width); margin: auto; padding: 1rem;
+}
+/* Estilo para las tarjetas de producto de Bootstrap */
+.grid.productos .card {
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  padding: 0; /* Bootstrap Card maneja su propio padding */
+  text-align: left;
+}
+.grid.productos .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+/* NUEVO: Clase para la imagen de la tarjeta */
+.product-card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+/* NUEVO: Clase para el precio */
+.precio {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--color-acento-choco);
+  text-align: left;
+  margin-bottom: 1rem;
+}
+.descripcion {
+  font-size: 0.9rem;
+  color: var(--color-texto-sec);
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+/* =========================================================
+   9. SECCIÓN COMUNIDAD / BLOG
+   ========================================================= */
+.comunidad { margin: 3rem auto; max-width: var(--max-width); padding: 2rem 1rem; }
+.comunidad h2 { margin-bottom: 1rem; }
+.comunidad p { margin-bottom: 2rem; }
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gap); }
+.card-blog {
+  background: var(--color-blanco); border-radius: var(--border-radius);
+  overflow: hidden; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  display: flex; flex-direction: column;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+.card-blog:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12); }
+.card-blog img { width: 100%; height: 200px; object-fit: cover; }
+.card-blog h3 { font-size: 1.3rem; margin: 1.5rem 1.5rem 0; text-align: left; }
+.card-blog p { flex: 1; margin: 1rem 1.5rem; text-align: left; }
+.card-blog .btn { margin: 0 1.5rem 1.5rem; align-self: flex-start; }
+
+/* =========================================================
+   10. MODAL DEL CARRITO
+   ========================================================= */
+.cart-modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 2000; opacity: 1; transition: opacity var(--transition-speed) ease;
+}
+.cart-content {
+  background: var(--color-blanco); padding: 2rem; border-radius: var(--border-radius);
+  width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+.cart-content h2 { text-align: center; }
+.cart-content ul { list-style: none; margin-bottom: 1rem; max-height: 300px; overflow-y: auto; }
+.cart-content li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #eee; }
+.cart-total { text-align: right; font-weight: bold; font-size: 1.3rem; margin-top: 1rem; }
+.cart-actions { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+
+/* =========================================================
+   11. BOTONES
+   ========================================================= */
+.btn {
+  padding: 0.7rem 1.5rem; border-radius: 50px; border: 2px solid transparent;
+  font-weight: bold; cursor: pointer; text-decoration: none;
+  transition: all var(--transition-speed) ease; font-size: 0.9rem;
+}
+/* Asegura que los botones de react-bootstrap tomen el color */
+.btn-primary, .btn-primary:focus {
+  background-color: var(--color-acento-choco) !important;
+  color: var(--color-blanco) !important;
+  border-color: var(--color-acento-choco) !important;
+  box-shadow: none !important;
+}
+.btn-primary:hover {
+  background-color: transparent !important;
+  color: var(--color-acento-choco) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+.btn-secondary, .btn-secondary:focus {
+  background-color: var(--color-acento-rosa) !important;
+  color: var(--color-texto) !important;
+  border-color: var(--color-acento-rosa) !important;
+  box-shadow: none !important;
+}
+.btn-secondary:hover {
+  background-color: transparent !important;
+  color: var(--color-acento-rosa) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(255,192,203,.2) !important;
+}
+
+/* =========================================================
+   12. RESPONSIVE DESIGN
+   ========================================================= */
+@media (max-width: 900px) {
+  .site-header { flex-direction: column; padding: 1rem; gap: 1rem; }
+  .menu { flex-wrap: wrap; justify-content: center; }
+  .hero { flex-direction: column; text-align: center; }
+  .hero__content, .hero__content h1, .hero__content p { text-align: center; }
+  .carousel-img { height: 300px; }
+}
+
+
