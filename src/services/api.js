@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // La URL base de tu Spring Boot
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://54.164.132.0:8080', });
 });
 
 // INTERCEPTOR (La parte clave de la seguridad):
