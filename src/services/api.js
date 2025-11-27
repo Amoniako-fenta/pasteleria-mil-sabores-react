@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-// La URL base de tu Spring Boot
+// ✅ AQUÍ ESTÁ EL CAMBIO CLAVE
+// Reemplazamos 'http://localhost:8080' por tu IP de AWS
 const api = axios.create({
-  baseURL: 'http://54.164.132.0:8080', });
+  baseURL: 'http://98.93.215.197:8080', 
 });
 
-// INTERCEPTOR (La parte clave de la seguridad):
-// Antes de enviar cualquier petición, revisa si tenemos un token guardado
-// y lo pega en la cabecera "Authorization".
+// Interceptor para seguridad (Token JWT)
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
