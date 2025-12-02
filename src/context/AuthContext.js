@@ -1,38 +1,40 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Importamos la configuración de Axios que creamos antes
+import api from '../services/api'; // Importamos la configuración de Axios
 
 // 1. Crear el Contexto
-export const AuthContext = createContext();
+const AuthContext = createContext();
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 // 2. Crear el Proveedor
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Nuevo: Para no mostrar la app hasta verificar sesión
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // 3. Función de Login (CONECTADA AL BACKEND)
+  // --- LOGIN (Conectar con Backend) ---
   const login = async (email, password) => {
     try {
       // Petición POST a tu Spring Boot
       const response = await api.post('/auth/login', { email, password });
       
-      // Si llegamos aquí, las credenciales son correctas
-      // Extraemos el token y los datos del usuario de la respuesta JSON
+      // Extraer datos
       const { token, ...userData } = response.data; 
 
-      // Guardamos en LocalStorage para que la sesión no se pierda al recargar
+      // Guardar sesión
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
 
-      // Actualizamos el estado de React
+      // Actualizar estado
       setCurrentUser(userData);
       
       return { success: true };
 
     } catch (error) {
       console.error("Error en login:", error);
-      // Devolvemos false para que la vista muestre el mensaje de error
       return { 
         success: false, 
         message: "Credenciales incorrectas o error de servidor" 
@@ -40,30 +42,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 4. Función de Logout
+  // --- REGISTRO (¡ESTA ES LA FUNCIÓN QUE FALTABA!) ---
+  const registerUser = async (name, email, password) => {
+    try {
+      // Enviamos los datos al endpoint de registro
+      await api.post('/auth/register', { name, email, password });
+      return { success: true };
+    } catch (error) {
+      console.error("Error en registro:", error);
+      // Leemos el mensaje de error del backend si existe
+      const errorMsg = error.response?.data || "Error al registrar usuario";
+      return { success: false, message: errorMsg };
+    }
+  };
+
+  // --- LOGOUT ---
   const logout = () => {
-    // Limpiamos todo
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setCurrentUser(null);
     navigate('/login');
   };
 
-  // 5. EFECTO: Recuperar sesión al recargar la página (Persistencia)
+  // --- PERSISTENCIA (Recargar página) ---
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
 
     if (storedUser && storedToken) {
-      // Si hay datos guardados, restauramos la sesión automáticamente
       setCurrentUser(JSON.parse(storedUser));
     }
-    setLoading(false); // Terminamos de cargar
+    setLoading(false); 
   }, []);
 
+  // Exportamos todo
   const value = {
     currentUser,
     login,
+    registerUser, // <--- ¡Asegúrate de que esto esté aquí!
     logout
   };
 
@@ -72,9 +88,4 @@ export const AuthProvider = ({ children }) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-};
-
-// 6. Hook personalizado
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+}
