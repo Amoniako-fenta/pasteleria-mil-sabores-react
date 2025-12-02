@@ -1,118 +1,102 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-
-const emailRegex = /^\S+@(\duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 
 function Register() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { registerUser } = useAuth(); // Usamos la función del contexto
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState("");
 
-  const onSubmit = (data) => {
-    const { name, email, password, age, code } = data;
-    let beneficio = `¡Bienvenido ${name}!`;
-    if (age >= 50) {
-      beneficio += "\nObtienes 50% de descuento en todos los productos.";
+  const onSubmit = async (data) => {
+    setServerError("");
+    // Llamamos al backend
+    const result = await registerUser(data.name, data.email, data.password);
+
+    if (result.success) {
+      alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
+      navigate('/login'); // Redirigimos al login para que entre
+    } else {
+      setServerError(result.message); // Mostramos el error (ej: email repetido)
     }
-    if (code && code.toUpperCase() === "FELICES50") {
-      beneficio += "\nObtienes 10% de descuento de por vida.";
-    }
-    if (email.endsWith("@duocuc.cl")) {
-      beneficio += "\nTorta GRATIS en tu cumpleaños por ser estudiante DUOC.";
-    }
-    localStorage.setItem(email, password);
-    alert(beneficio + "\nRegistro exitoso. Ya puedes iniciar sesión.");
-    navigate('/login');
   };
 
   return (
-    <main className="auth">
-      <h2>Registro de Usuario</h2>
-      <form id="registerForm" onSubmit={handleSubmit(onSubmit)}>
-        
-        {/* FIX: Cada campo está envuelto en un div.field */}
-        <div className="field">
-          <label htmlFor="name">Nombre:</label>
-          <input 
-            type="text" 
-            id="name" 
-            {...register("name", { 
-              required: "El nombre es requerido",
-              maxLength: { value: 100, message: "Máximo 100 caracteres" }
-            })} 
-          />
-          {errors.name && <span className="error-message">{errors.name.message}</span>}
-        </div>
+    <Container className="mt-5 mb-5 d-flex justify-content-center">
+      <Card style={{ width: '400px' }} className="shadow">
+        <Card.Body>
+          <h2 className="text-center mb-4">Crear Cuenta</h2>
+          
+          {serverError && <Alert variant="danger">{serverError}</Alert>}
 
-        <div className="field">
-          <label htmlFor="direction">Dirección:</label>
-          <input 
-            type="text" 
-            id="direction"
-            {...register("direction")}
-          />
-        </div>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            
+            <Form.Group className="mb-3">
+              <Form.Label>Nombre Completo</Form.Label>
+              <Form.Control 
+                {...register("name", { required: "El nombre es obligatorio" })} 
+                placeholder="Ej: Juan Pérez"
+              />
+              {errors.name && <span className="text-danger small">{errors.name.message}</span>}
+            </Form.Group>
 
-        <div className="field">
-          <label htmlFor="email">Correo:</label>
-          <input 
-            type="email" 
-            id="email" 
-            {...register("email", { 
-              required: "El correo es requerido",
-              maxLength: { value: 100, message: "Máximo 100 caracteres" },
-              pattern: {
-                value: emailRegex,
-                message: "Solo correos @duoc.cl, @profesor.duoc.cl o @gmail.com"
-              }
-            })} 
-          />
-          {errors.email && <span className="error-message">{errors.email.message}</span>}
-        </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Control 
+                type="email"
+                {...register("email", { 
+                  required: "El correo es obligatorio",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Correo inválido"
+                  }
+                })} 
+                placeholder="tu@correo.com"
+              />
+              {errors.email && <span className="text-danger small">{errors.email.message}</span>}
+            </Form.Group>
 
-        <div className="field">
-          <label htmlFor="password">Contraseña:</label>
-          <input 
-            type="password" 
-            id="password" 
-            {...register("password", { 
-              required: "La contraseña es requerida",
-              minLength: { value: 4, message: "Mínimo 4 caracteres" },
-              maxLength: { value: 10, message: "Máximo 10 caracteres" }
-            })} 
-          />
-          {errors.password && <span className="error-message">{errors.password.message}</span>}
-        </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control 
+                type="password"
+                {...register("password", { 
+                  required: "La contraseña es obligatoria",
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" }
+                })} 
+              />
+              {errors.password && <span className="text-danger small">{errors.password.message}</span>}
+            </Form.Group>
 
-        <div className="field">
-          <label htmlFor="age">Edad:</label>
-          <input 
-            type="number" 
-            id="age" 
-            {...register("age", { 
-              required: "La edad es requerida",
-              min: { value: 1, message: "La edad debe ser válida" },
-              valueAsNumber: true
-            })} 
-          />
-          {errors.age && <span className="error-message">{errors.age.message}</span>}
-        </div>
+            <Form.Group className="mb-4">
+              <Form.Label>Confirmar Contraseña</Form.Label>
+              <Form.Control 
+                type="password"
+                {...register("confirmPassword", { 
+                  required: "Confirma tu contraseña",
+                  validate: (val) => {
+                    if (watch('password') !== val) {
+                      return "Las contraseñas no coinciden";
+                    }
+                  }
+                })} 
+              />
+              {errors.confirmPassword && <span className="text-danger small">{errors.confirmPassword.message}</span>}
+            </Form.Group>
 
-        <div className="field">
-          <label htmlFor="code">Código de descuento:</label>
-          <input 
-            type="text" 
-            id="code" 
-            placeholder="Opcional"
-            {...register("code")} 
-          />
-        </div>
-        
-        <div className="actions">
-          <button type="submit" className="btn btn-primary">Registrarse</button>
-        </div>
-      </form>
-    </main>
+            <Button variant="primary" type="submit" className="w-100">
+              Registrarse
+            </Button>
+          </Form>
+
+          <div className="text-center mt-3">
+            <small>¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link></small>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 
