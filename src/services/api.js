@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-// ✅ AQUÍ ESTÁ EL CAMBIO CLAVE
-// Reemplazamos 'http://localhost:8080' por tu IP de AWS
+// ✅ CAMBIO IMPORTANTE:
+// Como estás corriendo el backend en tu PC, usa 'localhost'.
+// (Si estuvieras en AWS, aquí iría la IP pública).
 const api = axios.create({
-  baseURL: 'http://98.93.215.197:8080', 
+  baseURL: 'http://localhost:8080', 
 });
 
-// Interceptor para seguridad (Token JWT)
+// Interceptor para incluir el Token JWT automáticamente
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
